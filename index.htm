@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="myApp">
+<head>
+    <title>Learn and Understand AngularJS</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+
+    <!-- load bootstrap and fontawesome via CDN -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <style>
+        html, body, input, select, textarea
+        {
+            font-size: 1.05em;
+        }
+    </style>
+    
+    <!-- load angular via CDN -->
+    <script src="//code.angularjs.org/1.3.0-rc.1/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.3.0-rc.1/angular-messages.min.js"></script>
+    <script src="//code.angularjs.org/1.3.0-rc.1/angular-resource.min.js"></script>
+    <!-- <script src="app.js"></script> -->
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">AngularJS</a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container" ng-controller="myController">
+        <button ng-click="scrapeData()">Scrape Data</button>
+        <pre>{{ scrapedData }}</pre>
+    </div>
+
+    <script>
+        // Create the 'myApp' module
+        var app = angular.module('myApp', []);
+
+        // Create the 'myService' service
+        app.service('myService', ['$http', function($http) {
+            this.scrapeData = function() {
+                return $http.get('http://localhost:3000/scrape'); // Call the server-side endpoint to scrape data
+            };
+        }]);
+
+        // Create the 'myController' controller
+        app.controller('myController', ['$scope', 'myService', function($scope, myService) {
+            $scope.scrapeData = function() {
+                myService.scrapeData()
+                    .then(function(response) {
+                        // Handle the response data here
+                        console.log(response.data);
+                    })
+                    .catch(function(error) {
+                        // Handle any errors here
+                        console.error('Error scraping data:', error);
+                    });
+            };
+        }]);
+    </script>
+</body>
+</html>
