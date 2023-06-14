@@ -8,6 +8,7 @@ In VSCode install Live server plugin
 
 Run Command
 In localhost run the below command
-node server.js
+
+#node server.js
 
 In browser run the index.htm file
